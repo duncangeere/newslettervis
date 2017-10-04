@@ -194,6 +194,19 @@
 					yScale.domain([0, d3.max(dataset, function(d) {return d.Opens;})])
 						.nice();
 					*/
+                    
+                    // Update labels
+					svg.selectAll("text")
+						.data(dataset)
+						.transition()
+					    .duration(1000)
+						.text(function(d) {
+							return(d.Title+" "+d.Opens);})
+						.attr("text-anchor","start")
+						.attr("transform", function(d){
+							return "translate("+xScale(d.Date)+","+yScale(d.Opens)+") rotate(90)"})
+						.attr("dx","8")
+                    
 					// Update lines					
 					svg.selectAll("line")
 						.data(dataset)
@@ -212,17 +225,7 @@
 				   			return yScale(d.Opens);
 				   		})
 					
-					// Update labels
-					svg.selectAll("text")
-						.data(dataset)
-						.transition()
-					    .duration(1000)
-						.text(function(d) {
-							return(d.Title+" "+d.Opens);})
-						.attr("text-anchor","start")
-						.attr("transform", function(d){
-							return "translate("+xScale(d.Date)+","+yScale(d.Opens)+") rotate(90)"})
-						.attr("dx","8")
+					
 					
 					//Update Y axis
 					svg.select(".y.axis")
@@ -249,6 +252,22 @@
 					yScale.domain([0, d3.max(dataset, function(d) {return d.Clicks;})])
 						.nice();
 					*/
+                    
+                    
+					// Update labels
+					svg.selectAll("text")
+						.data(dataset)
+						.transition()
+					    .duration(1000)
+						.text(function(d) {
+							return(d.Title+" "+d.Clicks);})
+						.attr("transform", function(d){
+							return "translate("+xScale(d.Date)+","+yScale(d.Clicks)+") rotate(90)"})
+						.attr("dx", function(d) {
+                            return (this.getBBox().width*-1) - 5;
+                            })
+						.attr("text-anchor","start");
+                    
 					// Update lines					
 					svg.selectAll("line")
 						.data(dataset)
@@ -266,18 +285,6 @@
 				   		.attr("cy", function(d) {
 				   			return yScale(d.Clicks);
 				   		})
-					
-					// Update labels
-					svg.selectAll("text")
-						.data(dataset)
-						.transition()
-					    .duration(1000)
-						.text(function(d) {
-							return(d.Title+" "+d.Clicks);})
-						.attr("transform", function(d){
-							return "translate("+xScale(d.Date)+","+yScale(d.Clicks)+") rotate(90)"})
-						.attr("dx","-8")
-						.attr("text-anchor","end");
 					
 					//Update Y axis
 					svg.select(".y.axis")
@@ -304,6 +311,19 @@
 					yScale.domain([0, d3.max(dataset, function(d) {return d.Recipients;})])
 						.nice();
 					*/
+                    
+					// Update labels
+					svg.selectAll("text")
+						.data(dataset)
+						.transition()
+					    .duration(1000)
+						.text(function(d) {
+							return(d.Title+" "+d.Recipients);})
+						.attr("text-anchor","start")
+						.attr("transform", function(d){
+							return "translate("+xScale(d.Date)+","+yScale(d.Recipients)+") rotate(90)"})
+						.attr("dx","8")
+                    
 					// Update lines					
 					svg.selectAll("line")
 						.data(dataset)
@@ -322,17 +342,6 @@
 				   			return yScale(d.Recipients);
 				   		})
 					
-					// Update labels
-					svg.selectAll("text")
-						.data(dataset)
-						.transition()
-					    .duration(1000)
-						.text(function(d) {
-							return(d.Title+" "+d.Recipients);})
-						.attr("text-anchor","start")
-						.attr("transform", function(d){
-							return "translate("+xScale(d.Date)+","+yScale(d.Recipients)+") rotate(90)"})
-						.attr("dx","8")
 					
 					//Update Y axis
 					svg.select(".y.axis")
