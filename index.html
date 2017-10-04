@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>Subscribers to Duncan's Newsletter</title>
+		<title>Newsletter Statistics</title>
 		<script type="text/javascript" src="d3.js"></script>
 		<style type="text/css">
 			/* No style rules here yet */		
@@ -72,8 +72,7 @@
 
 				//Define Y axis
 				yAxis = d3.axisLeft()
-								  .scale(yScale)
-								  .ticks(6);
+								  .scale(yScale);
 
 				//Create SVG element
 				var svg = d3.select("body")
@@ -130,13 +129,13 @@
 				
 	   			//Create X axis
 	   			svg.append("g")
-	   				.attr("class", "axis")
+	   				.attr("class", "x axis")
 	   				.attr("transform", "translate(0," + (h - padding) + ")")
 	   				.call(xAxis);
 	   			
 	   			//Create Y axis
 	   			svg.append("g")
-	   				.attr("class", "axis")
+	   				.attr("class", "y axis")
 	   				.attr("transform", "translate(" + padding + ",0)")
 	   				.call(yAxis);
 				
@@ -144,9 +143,206 @@
 				svg.append("text")
 					.attr("class","title")
 					.attr("transform","translate("+(padding+10)+","+(padding+5)+")")
-					.text("Duncan's Newsletter subscribers over time")
+					.text("Duncan's Newsletter statistics over time")
 					.attr("font-family","sans-serif")
 					.attr("font-size","11px");
+				
+				//Recipients
+				svg.append("text")
+					.attr("class","recipients")
+					.attr("transform","translate("+(padding+38)+","+(padding+20)+")")
+					.text("Recipients")
+					.attr("font-family","sans-serif")
+					.attr("font-size","11px")
+					.attr("font-weight", "bold")
+					.attr("text-anchor","middle");
+				
+				//Opens
+				svg.append("text")
+					.attr("class","opens")
+					.attr("transform","translate("+(padding+93)+","+(padding+20)+")")
+					.text("Opens")
+					.attr("font-family","sans-serif")
+					.attr("font-size","11px")
+					.attr("font-weight","normal")
+					.attr("text-anchor","middle");
+				
+				//Clicks
+				svg.append("text")
+					.attr("class","clicks")
+					.attr("transform","translate("+(padding+135)+","+(padding+20)+")")
+					.text("Clicks")
+					.attr("font-family","sans-serif")
+					.attr("font-size","11px")
+					.attr("font-weight","normal")
+					.attr("text-anchor","middle");
+				
+				// On clicking Opens, update with new data
+				svg.select(".opens")
+					.on("click", function() {
+						
+					svg.select(".recipients")
+						.attr("font-weight","normal");
+					
+					svg.select(".opens")
+						.attr("font-weight","bold");
+					
+					svg.select(".clicks")
+						.attr("font-weight","normal");
+					/*
+					// Update yScale
+					yScale.domain([0, d3.max(dataset, function(d) {return d.Opens;})])
+						.nice();
+					*/
+					// Update lines					
+					svg.selectAll("line")
+						.data(dataset)
+						.transition()
+					    .duration(1000)
+				   		.attr("y2", function(d) {
+							return yScale(d.Opens);
+				   		})
+					
+					// Update circles
+					svg.selectAll("circle")
+						.data(dataset)
+						.transition()
+					    .duration(1000)
+				   		.attr("cy", function(d) {
+				   			return yScale(d.Opens);
+				   		})
+					
+					// Update labels
+					svg.selectAll("text")
+						.data(dataset)
+						.transition()
+					    .duration(1000)
+						.text(function(d) {
+							return(d.Title+" "+d.Opens);})
+						.attr("text-anchor","start")
+						.attr("transform", function(d){
+							return "translate("+xScale(d.Date)+","+yScale(d.Opens)+") rotate(90)"})
+						.attr("dx","8")
+					
+					//Update Y axis
+					svg.select(".y.axis")
+				    	.transition()
+				    	.duration(1000)
+						.call(yAxis);
+					
+				});
+				
+				// On clicking Clicks, update with new data
+				svg.select(".clicks")
+					.on("click", function() {
+						
+					svg.select(".recipients")
+						.attr("font-weight","normal");
+					
+					svg.select(".opens")
+						.attr("font-weight","normal");
+					
+					svg.select(".clicks")
+						.attr("font-weight","bold");
+					/*
+					// Update yScale
+					yScale.domain([0, d3.max(dataset, function(d) {return d.Clicks;})])
+						.nice();
+					*/
+					// Update lines					
+					svg.selectAll("line")
+						.data(dataset)
+						.transition()
+					    .duration(1000)
+				   		.attr("y2", function(d) {
+							return yScale(d.Clicks);
+				   		})
+					
+					// Update circles
+					svg.selectAll("circle")
+						.data(dataset)
+						.transition()
+					    .duration(1000)
+				   		.attr("cy", function(d) {
+				   			return yScale(d.Clicks);
+				   		})
+					
+					// Update labels
+					svg.selectAll("text")
+						.data(dataset)
+						.transition()
+					    .duration(1000)
+						.text(function(d) {
+							return(d.Title+" "+d.Clicks);})
+						.attr("transform", function(d){
+							return "translate("+xScale(d.Date)+","+yScale(d.Clicks)+") rotate(90)"})
+						.attr("dx","-8")
+						.attr("text-anchor","end");
+					
+					//Update Y axis
+					svg.select(".y.axis")
+				    	.transition()
+				    	.duration(1000)
+						.call(yAxis);
+					
+				});
+				
+				// On clicking Recipients, update with new data
+				svg.select(".recipients")
+					.on("click", function() {
+						
+					svg.select(".recipients")
+						.attr("font-weight","bold");
+					
+					svg.select(".opens")
+						.attr("font-weight","normal");
+					
+					svg.select(".clicks")
+						.attr("font-weight","normal");
+					/*
+					// Update yScale
+					yScale.domain([0, d3.max(dataset, function(d) {return d.Recipients;})])
+						.nice();
+					*/
+					// Update lines					
+					svg.selectAll("line")
+						.data(dataset)
+						.transition()
+					    .duration(1000)
+				   		.attr("y2", function(d) {
+							return yScale(d.Recipients);
+				   		})
+					
+					// Update circles
+					svg.selectAll("circle")
+						.data(dataset)
+						.transition()
+					    .duration(1000)
+				   		.attr("cy", function(d) {
+				   			return yScale(d.Recipients);
+				   		})
+					
+					// Update labels
+					svg.selectAll("text")
+						.data(dataset)
+						.transition()
+					    .duration(1000)
+						.text(function(d) {
+							return(d.Title+" "+d.Recipients);})
+						.attr("text-anchor","start")
+						.attr("transform", function(d){
+							return "translate("+xScale(d.Date)+","+yScale(d.Recipients)+") rotate(90)"})
+						.attr("dx","8")
+					
+					//Update Y axis
+					svg.select(".y.axis")
+				    	.transition()
+				    	.duration(1000)
+						.call(yAxis);
+					
+				});
+				
+				
 			});
 			
 		</script>
